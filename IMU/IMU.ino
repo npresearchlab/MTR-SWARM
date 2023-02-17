@@ -4,6 +4,10 @@
    Edited by Natasha Setiadi for NPRL
 */
 #include <Wire.h>
+
+#define ACCEL_COUNT 6
+#define BYTE_SPLIT (3 + 32)
+
 const int MPU = 0x68; // MPU6050 I2C address
 float AccX, AccY, AccZ;
 float GyroX, GyroY, GyroZ;
@@ -12,7 +16,9 @@ float roll, pitch, yaw;
 float AccErrorX, AccErrorY, GyroErrorX, GyroErrorY, GyroErrorZ;
 float elapsedTime, currentTime, previousTime;
 int c = 0;
-float accelxyz[5];
+float accelxyz[ACCEL_COUNT];
+
+
 void setup() {
   Serial.begin(19200);
   Wire.begin();                      // Initialize comunication
@@ -80,9 +86,18 @@ void loop() {
   accelxyz[3] = roll;
   accelxyz[4] = pitch;
   accelxyz[5] = yaw;
-  Serial.println(String(accelxyz[0]) + " " + String(accelxyz[1]) + " " + String(accelxyz[2])  + 
-  " " + String(accelxyz[3]) + " " + String(accelxyz[4]) + " " + String(accelxyz[5]));
+  //Serial.println(String(accelxyz[0]) + " " + String(accelxyz[1]) + " " + String(accelxyz[2])  + 
+  //" " + String(accelxyz[3]) + " " + String(accelxyz[4]) + " " + String(accelxyz[5]));
+
+
+  //Loop through and send each measurement.
+  for (int i = 0; i < ACCEL_COUNT; i++)
+  {
+    Serial.println("<" + String(i) + "," + String(accelxyz[i]) + ">");
+  }
 }
+
+
 void calculate_IMU_error() {
   // We can call this funtion in the setup section to calculate the accelerometer and gyro data error. From here we will get the error values used in the above equations printed on the Serial Monitor.
   // Note that we should place the IMU flat in order to get the proper values, so that we then can the correct values
