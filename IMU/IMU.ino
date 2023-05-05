@@ -7,6 +7,7 @@
 #include "global_constants.h"
 
 #define BYTE_SPLIT (3 + 32)
+#define PIN_FSR   (0)
 
 
 void setup() {
@@ -44,6 +45,9 @@ void loop() {
   //Loop through and send each measurement.
   for (int i = 0; i < ACCEL_COUNT; i++)
   {
-    Serial.println("<" + String(i) + "," + String(accelxyz[i]) + ">");
+    Serial.println("<0," + String(i) + "," + String(accelxyz[i]) + ">");
   }
+
+  //Only for index finger right now.
+  Serial.println("<1,1," + String(analogRead(PIN_FSR)) + ">");
 }
